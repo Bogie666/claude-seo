@@ -1,0 +1,17 @@
+{
+  "name": "claude-seo-dashboard",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Web dashboard for live Claude SEO audits and imported audit reports",
+  "scripts": {
+    "test:dashboard": "node --test dashboard-tests/*.test.js",
+    "check:dashboard": "node --check app.js && node --check api/audit.js && node --check lib/audit-engine.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "ipaddr.js": "2.5.0",
+    "node-html-parser": "9.0.5"
+  }
+}

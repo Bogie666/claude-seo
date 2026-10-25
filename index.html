@@ -3,154 +3,166 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Claude SEO | Open-source SEO audits for Claude Code</title>
-  <meta name="description" content="Run technical, content, schema, local, ecommerce, and AI search audits inside Claude Code with 26 SEO skills and 19 specialist agents.">
+  <title>Claude SEO Dashboard</title>
+  <meta name="description" content="Run live SEO audits, import Claude SEO reports, prioritize findings, and keep a browser-local audit history.">
   <meta name="robots" content="noindex, nofollow, noarchive">
-  <link rel="canonical" href="https://claude-seo.md/">
-  <meta name="theme-color" content="#090b14">
-  <meta property="og:title" content="Claude SEO">
-  <meta property="og:description" content="Open-source SEO audits inside Claude Code.">
-  <meta property="og:type" content="website">
-  <meta property="og:image" content="/assets/readme/v3/hero.svg">
+  <meta name="theme-color" content="#f5f6f8">
   <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
-  <a class="skip-link" href="#main">Skip to content</a>
-  <header class="site-header">
-    <a class="brand" href="#top" aria-label="Claude SEO home">
-      <span class="brand-mark" aria-hidden="true">C</span>
-      <span>Claude SEO</span>
-    </a>
-    <nav aria-label="Primary navigation">
-      <a href="#capabilities">Capabilities</a>
-      <a href="#workflow">How it works</a>
-      <a href="#install">Install</a>
-      <a class="nav-cta" href="https://github.com/Bogie666/claude-seo">View on GitHub</a>
-    </nav>
-  </header>
+  <a class="skip-link" href="#workspace">Skip to dashboard</a>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar" aria-label="Audit navigation">
+      <div class="brand-block">
+        <div class="brand-mark" aria-hidden="true"><span>C</span></div>
+        <div><strong>Claude SEO</strong><small>Audit intelligence</small></div>
+        <button class="sidebar-close" id="sidebarCloseButton" aria-label="Close navigation">×</button>
+      </div>
 
-  <main id="main">
-    <section class="hero" id="top">
-      <div class="hero-copy">
-        <p class="eyebrow"><span></span> Free and open source</p>
-        <h1>Rank in Google.<br><em>Get cited by AI.</em></h1>
-        <p class="hero-lede">Claude SEO turns Claude Code into a complete SEO team. Audit any website, find the highest-impact fixes, and get a prioritized plan in 10 to 15 minutes.</p>
-        <div class="hero-actions">
-          <a class="button button-primary" href="#install">Install Claude SEO</a>
-          <a class="button button-secondary" href="https://github.com/Bogie666/claude-seo">Explore the source</a>
-        </div>
-        <div class="proof-row" aria-label="Project statistics">
-          <div><strong>26</strong><span>SEO skills</span></div>
-          <div><strong>19</strong><span>specialist agents</span></div>
-          <div><strong>30+</strong><span>commands</span></div>
-          <div><strong>MIT</strong><span>licensed</span></div>
+      <nav class="side-nav" aria-label="Dashboard sections">
+        <button class="nav-item is-active" data-view="overview"><span class="nav-icon">⌂</span>Overview</button>
+        <button class="nav-item" data-view="issues"><span class="nav-icon">!</span>Issues<span class="nav-count" id="issuesNavCount">0</span></button>
+        <button class="nav-item" data-view="technical"><span class="nav-icon">⌘</span>Technical</button>
+        <button class="nav-item" data-view="onPage"><span class="nav-icon">Aa</span>On-page</button>
+        <button class="nav-item" data-view="content"><span class="nav-icon">¶</span>Content</button>
+        <button class="nav-item" data-view="schema"><span class="nav-icon">{ }</span>Schema</button>
+        <button class="nav-item" data-view="ai"><span class="nav-icon">✦</span>AI search</button>
+        <button class="nav-item" data-view="performance"><span class="nav-icon">↯</span>Performance</button>
+      </nav>
+
+      <div class="sidebar-section">
+        <div class="sidebar-label"><span>Recent audits</span><button id="clearHistoryButton" title="Clear audit history">Clear</button></div>
+        <div class="history-list" id="historyList">
+          <p class="history-empty">No saved audits yet.</p>
         </div>
       </div>
-      <div class="hero-art">
-        <div class="art-glow"></div>
-        <img src="/assets/readme/v3/hero.svg" width="1200" height="420" alt="Claude SEO agents improving a site's search rank from 48 to 1">
-      </div>
-    </section>
 
-    <section class="section intro" id="capabilities">
-      <div class="section-heading">
-        <p class="eyebrow"><span></span> Complete coverage</p>
-        <h2>One command. A full SEO team.</h2>
-        <p>Claude SEO checks the same areas a strong consultant would, then translates every finding into a clear action with a way to verify it worked.</p>
+      <div class="storage-note">
+        <span class="storage-dot"></span>
+        <div><strong>Browser-local history</strong><small>Reports remain on this device.</small></div>
       </div>
-      <div class="capability-grid">
-        <article class="capability-card accent-blue">
-          <span class="card-number">01</span>
-          <h3>Technical SEO</h3>
-          <p>Crawlability, indexing, sitemaps, redirects, Core Web Vitals, page speed, and rendering.</p>
-          <ul><li>Site-wide audits</li><li>Single-page analysis</li><li>Drift monitoring</li></ul>
-        </article>
-        <article class="capability-card accent-violet">
-          <span class="card-number">02</span>
-          <h3>Content and E-E-A-T</h3>
-          <p>Experience, expertise, authority, trust, topic coverage, thin content, and search intent.</p>
-          <ul><li>Content briefs</li><li>Topic clusters</li><li>SXO analysis</li></ul>
-        </article>
-        <article class="capability-card accent-teal">
-          <span class="card-number">03</span>
-          <h3>Schema and AI search</h3>
-          <p>Structured data, rich-result eligibility, AI citations, crawler access, and agent readiness.</p>
-          <ul><li>Schema generation</li><li>GEO scoring</li><li>AI visibility checks</li></ul>
-        </article>
-        <article class="capability-card accent-gold">
-          <span class="card-number">04</span>
-          <h3>Local and commerce</h3>
-          <p>Google Business Profile, reviews, map pack signals, products, marketplaces, and international SEO.</p>
-          <ul><li>Local SEO audits</li><li>Backlink analysis</li><li>Ecommerce checks</li></ul>
-        </article>
-      </div>
-    </section>
+    </aside>
 
-    <section class="section visual-panel" id="workflow">
-      <div class="visual-copy">
-        <p class="eyebrow"><span></span> Parallel analysis</p>
-        <h2>Specialists fan out across your site.</h2>
-        <p>Up to 17 agents work in parallel, each focused on a specific discipline. The result is one unified report, ranked by impact instead of a pile of disconnected warnings.</p>
-        <ol class="steps">
-          <li><span>1</span><div><strong>It learns your site</strong><p>Business type and context shape every check.</p></div></li>
-          <li><span>2</span><div><strong>The team investigates</strong><p>Technical, content, schema, performance, and AI agents work together.</p></div></li>
-          <li><span>3</span><div><strong>You get the plan</strong><p>Findings are scored, prioritized, and paired with verification steps.</p></div></li>
-        </ol>
-      </div>
-      <div class="visual-image">
-        <img src="/assets/readme/v3/team.svg" width="1200" height="420" loading="lazy" alt="The Claude SEO team of 19 specialist agents">
-      </div>
-    </section>
-
-    <section class="section commands">
-      <div class="section-heading split-heading">
-        <div>
-          <p class="eyebrow"><span></span> Built for real work</p>
-          <h2>From quick checks to complete audits.</h2>
+    <div class="main-column">
+      <header class="topbar">
+        <button class="icon-button mobile-menu" id="mobileMenuButton" aria-label="Open navigation" aria-controls="sidebar" aria-expanded="false">☰</button>
+        <form class="audit-form" id="auditForm">
+          <span class="url-icon" aria-hidden="true">⌕</span>
+          <input id="auditUrl" name="url" type="text" inputmode="url" autocomplete="url" placeholder="Enter a website to audit, for example lexairconditioning.com" aria-label="Website URL">
+          <button class="run-button" type="submit"><span>Run audit</span><kbd>↵</kbd></button>
+        </form>
+        <div class="top-actions">
+          <button class="secondary-button" id="importButton"><span>Import report</span></button>
+          <button class="icon-button" id="exportButton" title="Export current audit" aria-label="Export current audit as JSON" disabled>⇩</button>
         </div>
-        <p>Start with the command that matches the job. Claude SEO handles the research, synthesis, and reporting inside your existing Claude Code workflow.</p>
-      </div>
-      <div class="terminal" role="img" aria-label="Examples of Claude SEO commands">
-        <div class="terminal-bar"><i></i><i></i><i></i><span>claude-code</span></div>
-        <div class="terminal-body">
-          <p><span class="prompt">›</span> <code>/seo audit https://example.com</code><small>Full audit with a prioritized action plan</small></p>
-          <p><span class="prompt">›</span> <code>/seo page https://example.com/pricing</code><small>Deep analysis of one critical page</small></p>
-          <p><span class="prompt">›</span> <code>/seo geo https://example.com</code><small>AI search and citation readiness</small></p>
-          <p><span class="prompt">›</span> <code>/seo local https://example.com</code><small>Local SEO and Google Business Profile</small></p>
-        </div>
-      </div>
-    </section>
+      </header>
 
-    <section class="section install" id="install">
-      <div class="install-panel">
-        <div class="install-copy">
-          <p class="eyebrow"><span></span> Get started</p>
-          <h2>Your first audit is three commands away.</h2>
-          <p>You need Claude Code 1.0.33 or newer. Add the marketplace, install the plugin, and let the setup command prepare the isolated Python runtime and browser.</p>
-          <p class="fine-print">No API keys are required for the core audit. Optional integrations can add live Google, Bing, Moz, and third-party data.</p>
-        </div>
-        <div class="code-card">
-          <div class="code-label">Run inside Claude Code</div>
-          <pre><code><span>/plugin marketplace add</span> AgriciDaniel/claude-seo
-<span>/plugin install</span> claude-seo@agricidaniel-claude-seo
-<span>/seo setup</span></code></pre>
-          <a href="https://github.com/Bogie666/claude-seo#install">Read the installation guide</a>
-        </div>
-      </div>
-    </section>
-  </main>
+      <main id="workspace" tabindex="-1">
+        <section class="empty-state" id="emptyState">
+          <div class="empty-visual" aria-hidden="true">
+            <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
+            <div class="radar-score">SEO<span>ready</span></div>
+            <i class="radar-dot dot-one"></i><i class="radar-dot dot-two"></i><i class="radar-dot dot-three"></i>
+          </div>
+          <p class="eyebrow">Audit workspace</p>
+          <h1>Find what is holding a site back.</h1>
+          <p>Run a live page audit or import an existing Claude SEO report. The dashboard scores six disciplines and turns findings into a prioritized action plan.</p>
+          <div class="empty-actions">
+            <button class="primary-button" id="emptyRunButton">Audit a website</button>
+            <button class="ghost-button" id="emptyImportButton">Import a report</button>
+          </div>
+          <div class="capability-strip">
+            <span>Technical</span><span>On-page</span><span>Content</span><span>Schema</span><span>AI search</span><span>Performance</span>
+          </div>
+        </section>
 
-  <footer>
-    <div>
-      <a class="brand" href="#top"><span class="brand-mark" aria-hidden="true">C</span><span>Claude SEO</span></a>
-      <p>Open-source SEO audits for Claude Code.</p>
+        <section class="loading-state" id="loadingState" role="status" aria-live="polite" hidden>
+          <div class="loading-card">
+            <div class="scan-animation"><span></span><i></i></div>
+            <p class="eyebrow">Live audit in progress</p>
+            <h1 id="loadingDomain">Inspecting website</h1>
+            <p id="loadingMessage">Connecting to the target and validating the response.</p>
+            <div class="progress-track" role="progressbar" aria-label="Audit progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="14"><span id="loadingProgress"></span></div>
+            <div class="loading-steps" id="loadingSteps">
+              <span class="is-current">Fetch page</span><span>Inspect metadata</span><span>Score categories</span><span>Build action plan</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="dashboard" id="dashboard" hidden>
+          <div class="report-header">
+            <div>
+              <div class="report-kicker"><span class="source-badge" id="sourceBadge">Live audit</span><span id="auditTimestamp"></span></div>
+              <h1 id="reportDomain">Website audit</h1>
+              <a id="reportUrl" href="#" target="_blank" rel="noopener noreferrer"></a>
+            </div>
+            <div class="report-actions">
+              <button class="ghost-button compact" id="rerunButton">Run again</button>
+              <button class="secondary-button compact" id="reportExportButton">Export JSON</button>
+            </div>
+          </div>
+
+          <section class="overview-grid" data-section="overview">
+            <article class="score-card panel">
+              <div class="score-ring" id="scoreRing"><div><strong id="overallScore">--</strong><span>/ 100</span></div></div>
+              <div class="score-copy"><span>Overall SEO score</span><strong id="overallGrade">Not scored</strong><p id="scoreSummary">Run or import an audit to calculate the score.</p></div>
+            </article>
+            <article class="stat-card panel critical-stat"><span class="stat-icon">!</span><div><strong id="criticalCount">0</strong><span>Critical issues</span></div></article>
+            <article class="stat-card panel warning-stat"><span class="stat-icon">△</span><div><strong id="warningCount">0</strong><span>Warnings</span></div></article>
+            <article class="stat-card panel pass-stat"><span class="stat-icon">✓</span><div><strong id="passCount">0</strong><span>Passed checks</span></div></article>
+          </section>
+
+          <section class="panel category-panel" data-section="overview">
+            <div class="panel-heading"><div><p class="eyebrow">Scorecard</p><h2>Performance by discipline</h2></div><span class="panel-note">Weighted page-level assessment</span></div>
+            <div class="category-grid" id="categoryGrid"></div>
+          </section>
+
+          <section class="content-grid">
+            <article class="panel findings-panel" data-section="issues">
+              <div class="panel-heading findings-heading">
+                <div><p class="eyebrow">Action plan</p><h2 id="findingsTitle">Prioritized findings</h2></div>
+                <div class="filter-row" id="severityFilters">
+                  <button class="filter-chip is-active" data-severity="all">All</button>
+                  <button class="filter-chip" data-severity="critical">Critical</button>
+                  <button class="filter-chip" data-severity="warning">Warnings</button>
+                  <button class="filter-chip" data-severity="pass">Passed</button>
+                </div>
+              </div>
+              <div class="findings-list" id="findingsList"></div>
+            </article>
+
+            <aside class="detail-column">
+              <article class="panel page-facts" data-section="overview">
+                <div class="panel-heading"><div><p class="eyebrow">Page snapshot</p><h2>Audit facts</h2></div></div>
+                <dl id="pageFacts"></dl>
+              </article>
+              <article class="panel limitations" data-section="overview">
+                <div class="panel-heading"><div><p class="eyebrow">Scope</p><h2>What this run covers</h2></div></div>
+                <ul id="limitationsList"></ul>
+              </article>
+            </aside>
+          </section>
+        </section>
+      </main>
     </div>
-    <div class="footer-links">
-      <a href="https://github.com/Bogie666/claude-seo">GitHub</a>
-      <a href="https://github.com/Bogie666/claude-seo/blob/main/LICENSE">MIT License</a>
-      <a href="https://claude-seo.md/">Official website</a>
-    </div>
-    <p class="attribution">Original project by Daniel Agrici. This deployment is built from the Bogie666 repository fork.</p>
-  </footer>
+  </div>
+
+  <dialog class="import-dialog" id="importDialog" aria-labelledby="importDialogTitle">
+    <form method="dialog" class="dialog-shell" id="importForm">
+      <div class="dialog-header"><div><p class="eyebrow">Bring your own report</p><h2 id="importDialogTitle">Import an audit</h2></div><button class="dialog-close" value="cancel" aria-label="Close">×</button></div>
+      <p class="dialog-intro">Upload the dashboard JSON format or paste a Markdown report from Claude SEO. Imported audits are saved only in this browser.</p>
+      <label class="drop-zone" id="dropZone">
+        <input type="file" id="reportFile" accept=".json,.md,.markdown,.txt,application/json,text/markdown,text/plain">
+        <span class="upload-icon">⇧</span><strong>Choose a report or drop it here</strong><small>JSON, Markdown, or text up to 2 MB</small>
+      </label>
+      <div class="divider"><span>or paste report content</span></div>
+      <textarea id="reportText" placeholder="# SEO Audit Report&#10;&#10;Paste a Markdown report or JSON object here..." aria-label="Report content"></textarea>
+      <div class="dialog-actions"><button class="ghost-button" value="cancel">Cancel</button><button class="primary-button" id="processImportButton" value="default">Import report</button></div>
+    </form>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <div class="mobile-overlay" id="mobileOverlay"></div>
+  <script src="/app.js" defer></script>
 </body>
 </html>
