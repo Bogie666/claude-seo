@@ -296,7 +296,8 @@
   function renderCategories() {
     const categories = state.audit.categories || {};
     els.categoryGrid.innerHTML = Object.entries(CATEGORY_LABELS).map(([key, label]) => {
-      const raw = categories[key] && Number(categories[key].score);
+      const value = categories[key] && categories[key].score;
+      const raw = value == null ? Number.NaN : Number(value);
       const score = Number.isFinite(raw) ? Math.round(raw) : null;
       return `<button class="category-card" data-category="${key}" title="Show ${escapeHtml(label)} findings">
         <span class="category-top"><span>${escapeHtml(label)}</span><strong>${score == null ? '--' : score}</strong></span>
