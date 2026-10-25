@@ -100,7 +100,7 @@ async function assertPublicUrl(parsed, deadline = Date.now() + REQUEST_TIMEOUT_M
   return records[0];
 }
 
-function requestPinned(parsed, record, { limit, timeout, accept }) {
+function requestPinned(parsed, record, { limit, timeout, accept, truncate = false }) {
   return new Promise((resolve, reject) => {
     const transport = parsed.protocol === 'https:' ? https : http;
     const hostname = parsed.hostname.replace(/^\[|\]$/g, '');
@@ -148,7 +148,7 @@ function requestPinned(parsed, record, { limit, timeout, accept }) {
         return;
       }
       const contentLength = Number(headers['content-length'] || 0);
-      if (contentLength > limit) {
+      if (!truncate && contentLength > limit) {
         abort(new Error(`The response exceeds the ${(limit / 1024 / 1024).toFixed(1)} MB audit limit.`));
         return;
       }
@@ -181,6 +181,15 @@ function requestPinned(parsed, record, { limit, timeout, accept }) {
       const chunks = [];
       let decodedBytes = 0;
       stream.on('data', (chunk) => {
+        if (decodedBytes + chunk.length > limit && truncate) {
+          const remaining = Math.max(0, limit - decodedBytes);
+          if (remaining) chunks.push(chunk.subarray(0, remaining));
+          decodedBytes += remaining;
+          if (response && !response.destroyed) response.destroy();
+          for (const item of streams) if (item && !item.destroyed) item.destroy();
+          finish(null, { status, headers, body: Buffer.concat(chunks, decodedBytes), truncated: true });
+          return;
+        }
         decodedBytes += chunk.length;
         if (decodedBytes > limit) {
           abort(new Error(`The response exceeds the ${(limit / 1024 / 1024).toFixed(1)} MB decoded limit.`));
@@ -188,7 +197,7 @@ function requestPinned(parsed, record, { limit, timeout, accept }) {
         }
         chunks.push(chunk);
       });
-      stream.on('end', () => finish(null, { status, headers, body: Buffer.concat(chunks, decodedBytes) }));
+      stream.on('end', () => finish(null, { status, headers, body: Buffer.concat(chunks, decodedBytes), truncated: false }));
       stream.on('error', abort);
       response.on('error', abort);
     });
@@ -203,13 +212,14 @@ async function safeFetch(rawUrl, {
   deadline = Date.now() + timeout,
   maxRedirects = MAX_REDIRECTS,
   accept = 'text/html,application/xhtml+xml',
+  truncate = false,
 } = {}) {
   let current = normalizeUrl(rawUrl);
   for (let redirect = 0; redirect <= maxRedirects; redirect += 1) {
     const remaining = remainingMs(deadline);
     if (remaining < 1) throw Object.assign(new Error('The audit deadline was reached.'), { name: 'TimeoutError' });
     const record = await assertPublicUrl(current, deadline);
-    const response = await requestPinned(current, record, { limit, timeout: Math.min(timeout, remainingMs(deadline)), accept });
+    const response = await requestPinned(current, record, { limit, timeout: Math.min(timeout, remainingMs(deadline)), accept, truncate });
     if ([301, 302, 303, 307, 308].includes(response.status)) {
       const location = response.headers.location;
       if (!location) throw new Error('The target returned a redirect without a location.');
@@ -299,7 +309,7 @@ async function handler(req, res) {
     const requested = normalizeUrl(payload.url);
     const started = Date.now();
     const deadline = started + AUDIT_DEADLINE_MS;
-    const result = await safeFetch(requested.toString(), { deadline });
+    const result = await safeFetch(requested.toString(), { deadline, truncate: true });
     const responseTimeMs = Date.now() - started;
     const contentType = result.response.headers['content-type'] || '';
     if (!/text\/html|application\/xhtml\+xml/i.test(contentType)) {
@@ -321,6 +331,7 @@ async function handler(req, res) {
       headers,
       html: result.body.toString('utf8'),
       htmlBytes: result.body.length,
+      htmlTruncated: Boolean(result.response.truncated),
       responseTimeMs,
       robots,
       sitemap,

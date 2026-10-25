@@ -77,3 +77,17 @@ test('caps the decoded body of compressed responses', async () => {
     );
   });
 });
+
+test('returns a bounded partial HTML body when truncation is enabled', async () => {
+  const compressed = zlib.gzipSync(Buffer.alloc(64 * 1024, 'x'));
+  await withServer((_req, res) => {
+    res.writeHead(200, { 'Content-Type': 'text/html', 'Content-Encoding': 'gzip', 'Content-Length': compressed.length });
+    res.end(compressed);
+  }, async (url) => {
+    const result = await requestPinned(url, { address: '127.0.0.1', family: 4 }, {
+      limit: 1024, timeout: 1000, accept: 'text/html', truncate: true,
+    });
+    assert.equal(result.body.length, 1024);
+    assert.equal(result.truncated, true);
+  });
+});
